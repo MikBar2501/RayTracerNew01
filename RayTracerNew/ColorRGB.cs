@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -49,7 +50,7 @@ namespace RayTracerNew
 
             Vector3 newVector = colorVector1 * colorVector2;
 
-            return newVector.ToMyColor();
+            return ToMyColor(newVector);
         }
 
 
@@ -59,7 +60,7 @@ namespace RayTracerNew
             Vector3 colorVector = color.ChangeToVector();
             Vector3 newVector = colorVector * value;
 
-            return newVector.ToMyColor();
+            return ToMyColor(newVector);
         }
 
         public static ColorRGB operator /(ColorRGB color, float value)
@@ -67,12 +68,17 @@ namespace RayTracerNew
             Vector3 colorVector = color.ChangeToVector();
             Vector3 newVector = colorVector / value;
 
-            return newVector.ToMyColor();
+            return ToMyColor(newVector);
         }
 
         public static ColorRGB operator +(ColorRGB color1, ColorRGB color2)
         {
             return new ColorRGB(color1.r + color2.r, color1.g + color2.g, color1.b + color2.b);
+        }
+
+        public static ColorRGB ToMyColor(Vector3 vector)
+        {
+            return new ColorRGB(Math.Min((int)(vector.X * 255), 255), Math.Min((int)(vector.Y * 255), 255), Math.Min((int)(vector.Z * 255), 255));
         }
     }
 }

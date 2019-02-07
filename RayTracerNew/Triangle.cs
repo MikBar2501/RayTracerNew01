@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -43,7 +44,7 @@ namespace RayTracerNew
 
             hitPoint = transform * hitPoint;
             normal = transform.Inverse().Transpose() * normal;
-            normal = normal.Normalize();
+            normal = Vector3.Normalize(normal);
             return true;
         }
 
@@ -52,13 +53,13 @@ namespace RayTracerNew
             Vector3 AB = B - A;
             Vector3 CB = B - C;
             Vector3 AI = I - A;
-            Vector3 V = AB - Vector3.Projection(AB, CB);
+            Vector3 V = AB - Projection(AB, CB);
             return 1 - (Vector3.Dot(V, AI) / Vector3.Dot(V, AB));
         }
 
         public Vector3 Normal()
         {
-            return (Vector3.Cross(vert2 - vert1, vert3 - vert1)).Normalize();
+            return Vector3.Normalize(Vector3.Cross(vert2 - vert1, vert3 - vert1));
         }
 
         public Vector3 GetHitPoint(Ray ray)
@@ -67,6 +68,11 @@ namespace RayTracerNew
             return ray.origin + ray.direction
                 * ((Vector3.Dot(fromCameraToVect1, normal))
                 / (Vector3.Dot(ray.direction, normal)));
+        }
+
+        public static Vector3 Projection(Vector3 vecTo, Vector3 vecOn)
+        {
+            return vecOn * ((Vector3.Dot(vecOn, vecTo)) / (Vector3.Dot(vecOn, vecOn)));
         }
     }
 }

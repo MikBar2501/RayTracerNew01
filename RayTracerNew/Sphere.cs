@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -48,11 +49,11 @@ namespace RayTracerNew
 
 
                 hitPoint = transformedRay.origin + transformedRay.direction * x;
-                normal = (hitPoint - center).Normalize();
+                normal = Vector3.Normalize((hitPoint - center));
 
                 hitPoint = transform * hitPoint;
                 normal = transform.Inverse().Transpose() * normal;
-                normal = normal.Normalize();
+                normal = Vector3.Normalize(normal);
                 //hitPoint = transform.Reverse() * hitPoint;
                 //if (Vector3.Dot(hitPoint - center, hitPoint - center) - radius * radius != 0)
                 //    return false;

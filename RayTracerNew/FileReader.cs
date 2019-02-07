@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Numerics;
 
 
 public enum Command
@@ -455,7 +456,7 @@ namespace RayTracerNew
 
                     DirectionalLight light = new DirectionalLight();
                     light.color = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
-                    light.direction = (new Vector3(args[0], args[1], args[2])).Normalize();
+                    light.direction = Vector3.Normalize(new Vector3(args[0], args[1], args[2]));
                     Raytracer.main.lighting.lights.Add(light);
                     break;
 

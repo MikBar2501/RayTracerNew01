@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -99,7 +100,7 @@ namespace RayTracerNew
 
                                     Vector3 lightPose = light.GetPosition();
 
-                                    Ray toLightRay = new Ray(pointOfContact, (light.GetDirection(pointOfContact) * -1).Normalize()); //poszukaj filmikow, przeanalizuj laski
+                                    Ray toLightRay = new Ray(pointOfContact, Vector3.Normalize(light.GetDirection(pointOfContact) * -1)); //poszukaj filmikow, przeanalizuj laski
                                     foreach (GeometricObject lightPrim in primitives)
                                     {
                                         if (lightPrim == primitive)
@@ -150,7 +151,7 @@ namespace RayTracerNew
                                         Vector3 n = currentNormal;
                                         Vector3 r = v - n * (2 * (Vector3.Dot(n, v)));
 
-                                        currentRay = new Ray(currentPoinOfContact, r.Normalize());
+                                        currentRay = new Ray(currentPoinOfContact, Vector3.Normalize(r));
                                         Vector3 pointBehindIntersected = currentRay.origin + currentRay.direction * 1000;
                                         foreach (GeometricObject primReflect in primitives)
                                         {

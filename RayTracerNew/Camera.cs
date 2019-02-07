@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -39,8 +40,8 @@ namespace RayTracerNew
             lookAngleX = 2 * (float)Math.Atan((float)imageWidth / imageHeight * Math.Tan(this.lookAngleY / 2));
             Debug.WriteLine("Look angle x " + lookAngleX);
 
-            w = (position - LookAtPoint).Normalize();
-            u = Vector3.Cross(up, w).Normalize();
+            w = Vector3.Normalize(position - LookAtPoint);
+            u = Vector3.Normalize(Vector3.Cross(up, w));
             v = Vector3.Cross(w, u);
         }
 
@@ -48,7 +49,7 @@ namespace RayTracerNew
 
         Vector3 GetLookDirForAngle(float alpha, float beta)
         {
-            return (u * alpha + v * beta - w).Normalize();
+            return Vector3.Normalize(u * alpha + v * beta - w);
         }
 
         public Camera()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -126,9 +127,9 @@ namespace RayTracerNew
         public static Vector3 operator *(Matrix m, Vector3 v)
         {
             Matrix vm = new Matrix(4, 1);
-            vm.grid[0, 0] = v.x;
-            vm.grid[1, 0] = v.y;
-            vm.grid[2, 0] = v.z;
+            vm.grid[0, 0] = v.X;
+            vm.grid[1, 0] = v.Y;
+            vm.grid[2, 0] = v.Z;
             vm.grid[3, 0] = 1;
 
             Matrix matNew = m * vm;
@@ -168,7 +169,7 @@ namespace RayTracerNew
                 m3.grid[3, y] = 0;
             }
 
-            Vector3 dir = (m3 * r.direction).Normalize();
+            Vector3 dir = Vector3.Normalize(m3 * r.direction);
 
             return new Ray(pose, dir);
         }
@@ -178,18 +179,18 @@ namespace RayTracerNew
             //tran = tran * 0.125f;
 
             return new Matrix(
-                1, 0, 0, tran.x,
-                0, 1, 0, tran.y,
-                0, 0, 1, tran.z,
+                1, 0, 0, tran.X,
+                0, 1, 0, tran.Y,
+                0, 0, 1, tran.Z,
                 0, 0, 0, 1);
         }
 
         public static Matrix GetScaleMatrix(Vector3 scale)
         {
             return new Matrix(
-                scale.x, 0, 0, 0,
-                0, scale.y, 0, 0,
-                0, 0, scale.z, 0,
+                scale.X, 0, 0, 0,
+                0, scale.Y, 0, 0,
+                0, 0, scale.Z, 0,
                 0, 0, 0, 1);
         }
 
@@ -235,10 +236,6 @@ namespace RayTracerNew
                 0, 0, 0, 1);
         }
 
-        public static float RadianTuDegree(float radian)
-        {
-            return (float)(radian * 180 / Math.PI);
-        }
 
         public static float DegreeToRadian(float degree)
         {

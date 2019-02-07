@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -28,8 +29,8 @@ namespace RayTracerNew
                     visible = 1;
 
                 Vector3 lightDirection = light.GetDirection(point);
-                Vector3 toCamera = (cameraPose - point).Normalize();
-                Vector3 halfVector = (lightDirection + toCamera).Normalize();
+                Vector3 toCamera = Vector3.Normalize(cameraPose - point);
+                Vector3 halfVector = Vector3.Normalize(lightDirection + toCamera);
                 ColorRGB lightColor = light.GetLightColor(point);
 
                 ColorRGB diffuse = material.diffuse * (Max(0, Vector3.Dot(lightDirection, normal)));

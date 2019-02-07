@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace RayTracerNew
 {
@@ -32,9 +33,9 @@ namespace RayTracerNew
 
         public static Vector3 operator *(Matrix3x3 matrix3x3, Vector3 vec3)
         {
-            float x = matrix3x3.x[0] * vec3.x + matrix3x3.x[1] * vec3.y + matrix3x3.x[2] * vec3.z;
-            float y = matrix3x3.y[0] * vec3.x + matrix3x3.y[1] * vec3.y + matrix3x3.y[2] * vec3.z;
-            float z = matrix3x3.z[0] * vec3.x + matrix3x3.z[1] * vec3.y + matrix3x3.z[2] * vec3.z;
+            float x = matrix3x3.x[0] * vec3.X + matrix3x3.x[1] * vec3.Y + matrix3x3.x[2] * vec3.Z;
+            float y = matrix3x3.y[0] * vec3.X + matrix3x3.y[1] * vec3.Y + matrix3x3.y[2] * vec3.Z;
+            float z = matrix3x3.z[0] * vec3.X + matrix3x3.z[1] * vec3.Y + matrix3x3.z[2] * vec3.Z;
 
             return new Vector3(x, y, z);
         }
