@@ -21,8 +21,6 @@ namespace RayTracerNew
         public override bool HitTest(Ray ray, out Vector3 hitPoint, out Vector3 normal)
         {
             Ray transformedRay = reverseTransform * ray;
-
-            //x = 0;
             Vector3 distance = transformedRay.origin - center;
             float a = Vector3.Dot(transformedRay.direction, transformedRay.direction);
             float b = Vector3.Dot(transformedRay.direction * 2, distance);
@@ -52,8 +50,8 @@ namespace RayTracerNew
                 normal = Vector3.Normalize((hitPoint - center));
 
                 hitPoint = transform * hitPoint;
-                normal = transform.Inverse().Transpose() * normal;
-                normal = Vector3.Normalize(normal);
+                normal = Vector3.Normalize(transform.Inverse().Transpose() * normal);
+                //normal = Vector3.Normalize(normal);
                 //hitPoint = transform.Reverse() * hitPoint;
                 //if (Vector3.Dot(hitPoint - center, hitPoint - center) - radius * radius != 0)
                 //    return false;

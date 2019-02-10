@@ -340,7 +340,7 @@ namespace RayTracerNew
                     Triangle triangle = new Triangle(vectors[(int)args[0]], vectors[(int)args[1]], vectors[(int)args[2]]);
                     triangle.transform = transform.GetMatrix();
                     triangle.reverseTransform = triangle.transform.Inverse();
-                    triangle.normal = triangle.Normal();
+                    //triangle.normal = triangle.Normal();
                     triangle.material = new Material(material);
                     Raytracer.main.AddPrimitive(triangle);
                     break;

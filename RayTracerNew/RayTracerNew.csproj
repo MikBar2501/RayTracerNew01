@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="DirectionalLight.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -56,14 +55,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Light.cs" />
     <Compile Include="Lighting.cs" />
     <Compile Include="Lights.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Matrix3x3.cs" />
     <Compile Include="ColorRGB.cs" />
-    <Compile Include="PointLight.cs" />
     <Compile Include="Primitive.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
