@@ -14,70 +14,63 @@ namespace RayTracerNew
         public int imageHeight;
 
         public Vector3 position;
-        Vector3 lookDir;
+        Vector3 lookDirection;
+        Vector3 centerPoint;
 
-        Vector3 center;
+        float fovX;
+        float fovY;
 
-        float lookAngleX;
-        float lookAngleY;
+        Vector3 u;
+        Vector3 v;
+        Vector3 w;
 
-        Vector3 u, v, w;
-
-        public void SetSize(int width, int height)
+        public Camera()
         {
-            this.imageWidth = width;
-            this.imageHeight = height + 1;
-            center = new Vector3(width / 2, height / 2, 0);
+            this.imageWidth = 512;
+            this.imageHeight = 512;
+            this.position = new Vector3();
+            lookDirection = new Vector3(0, 0, 1);
+            centerPoint = new Vector3(imageWidth / 2, imageHeight / 2, 0);
         }
 
-        public void SetTransform(Vector3 position, Vector3 LookAtPoint, Vector3 up, float lookAngleY)
+        public void SetSize(int imageWidth, int imageHeight)
+        {
+            this.imageWidth = imageWidth;
+            this.imageHeight = imageHeight + 1;
+            centerPoint = new Vector3(imageWidth / 2, imageHeight / 2, 0);
+        }
+
+        public void SetTransform(Vector3 position, Vector3 lookPoint, Vector3 up, float fovY)
         {
             this.position = position;
-            lookDir = LookAtPoint - position;
-            //this.lookAngleY = Raytracer.DegreeToRadian(lookAngleY);
-            this.lookAngleY = (float)(lookAngleY * Math.PI / (float)180);
-            Debug.WriteLine("Look angle y " + this.lookAngleY);
-            lookAngleX = 2 * (float)Math.Atan((float)imageWidth / imageHeight * Math.Tan(this.lookAngleY / 2));
-            Debug.WriteLine("Look angle x " + lookAngleX);
+            lookDirection = lookPoint - position;
+            this.fovY = (float)(fovY * Math.PI / (float)180);
+            fovX = 2 * (float)Math.Atan((float)imageWidth / imageHeight * Math.Tan(this.fovY / 2));
 
-            w = Vector3.Normalize(position - LookAtPoint);
+            w = Vector3.Normalize(position - lookPoint);
             u = Vector3.Normalize(Vector3.Cross(up, w));
             v = Vector3.Cross(w, u);
         }
 
+        
 
-
-        Vector3 GetLookDirForAngle(float alpha, float beta)
+        public Camera(int imageWidth, int imageHeight, Vector3 position, Vector3 lookPoint)
         {
-            return Vector3.Normalize(u * alpha + v * beta - w);
-        }
-
-        public Camera()
-        {
-            this.imageWidth = 500;
-            this.imageHeight = 500;
-            this.position = new Vector3();
-            lookDir = new Vector3(0, 0, 1);
-            center = new Vector3(imageWidth / 2, imageHeight / 2, 0);
-        }
-
-        public Camera(int width, int height, Vector3 position, Vector3 LookAtPoint)
-        {
-            this.imageWidth = width;
-            this.imageHeight = height;
+            this.imageWidth = imageWidth;
+            this.imageHeight = imageHeight;
             this.position = position;
-            lookDir = LookAtPoint - position;
-            center = new Vector3(width / 2, height / 2, 0);
+            lookDirection = lookPoint - position;
+            centerPoint = new Vector3(imageWidth / 2, imageHeight / 2, 0);
         }
 
         public Ray GetRay(int x, int y)
         {
-            float alpha = (x - imageWidth / 2.0f) / (imageWidth / 2.0f) * (float)Math.Tan(lookAngleX / 2.0f);
-            float beta = (y - imageHeight / 2.0f) / (imageHeight / 2.0f) * (float)Math.Tan(lookAngleY / 2.0f);
+            float alpha = (x - imageWidth / 2.0f) / (imageWidth / 2.0f) * (float)Math.Tan(fovX / 2.0f);
+            float beta = (y - imageHeight / 2.0f) / (imageHeight / 2.0f) * (float)Math.Tan(fovY / 2.0f);
 
-            Vector3 curLookDir = GetLookDirForAngle(alpha, beta);
+            Vector3 newLookDirection = Vector3.Normalize(u * alpha + v * beta - w);
 
-            return new Ray(position, curLookDir);
+            return new Ray(position, newLookDirection);
         }
     }
 }

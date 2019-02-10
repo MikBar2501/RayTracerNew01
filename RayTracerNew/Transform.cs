@@ -9,19 +9,12 @@ namespace RayTracerNew
 {
     class Transform
     {
-        public Matrix translate;
-        public Matrix rotation;
-        public Matrix scale;
-
         public Matrix transform;
 
         public List<Matrix> transList;
 
         public Transform(Transform trans)
         {
-            translate = trans.translate;
-            rotation = trans.rotation;
-            scale = trans.scale;
             transform = new Matrix();
             transList = new List<Matrix>();
             foreach (Matrix tran in trans.transList)
@@ -32,16 +25,12 @@ namespace RayTracerNew
 
         public Transform()
         {
-            translate = new Matrix();
-            rotation = new Matrix();
-            scale = new Matrix();
             transform = new Matrix();
             transList = new List<Matrix>();
         }
 
         public Matrix GetMatrix()
         {
-            //return translate * rotation * scale;
             transform = new Matrix();
             for (int i = transList.Count - 1; i >= 0; i--)
             {

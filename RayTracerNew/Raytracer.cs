@@ -52,7 +52,7 @@ namespace RayTracerNew
             reader.Read(@path);
 
 
-            foreach (GeometricObject primitive in primitives)
+           /* foreach (GeometricObject primitive in primitives)
             {
                 Debug.WriteLine("trans");
                 reader.DrawMatrix(primitive.transform);
@@ -60,7 +60,7 @@ namespace RayTracerNew
                 reader.DrawMatrix(primitive.reverseTransform);
                 Debug.WriteLine("*");
                 reader.DrawMatrix(primitive.reverseTransform * primitive.transform);
-            }
+            }*/
 
             Debug.WriteLine("Read complited");
 
@@ -94,13 +94,13 @@ namespace RayTracerNew
 
                                 //==LIGHT==//
                                 //bool visible = true;
-                                foreach (Light light in lighting.lights)
+                                foreach (Lights light in lighting.lights)
                                 {
-                                    light.visible = true;
+                                    light.isVisible = true;
 
                                     Vector3 lightPose = light.GetPosition();
 
-                                    Ray toLightRay = new Ray(pointOfContact, Vector3.Normalize(light.GetDirection(pointOfContact) * -1)); //poszukaj filmikow, przeanalizuj laski
+                                    Ray toLightRay = new Ray(pointOfContact, Vector3.Normalize(light.GetDirection(pointOfContact) * -1));
                                     foreach (GeometricObject lightPrim in primitives)
                                     {
                                         if (lightPrim == primitive)
@@ -119,7 +119,7 @@ namespace RayTracerNew
                                             && oldPointOfContactToLight > newPointOfContactToLight
                                             && oldPointOfContactToLight > oldToNew)
                                             {
-                                                light.visible = false;
+                                                light.isVisible = false;
                                                 //pixelColor = Color.Black;
                                                 break;
                                             }
@@ -130,7 +130,7 @@ namespace RayTracerNew
 
                                 ColorRGB myPixelColor = new ColorRGB(0, 0, 0);
 
-                                myPixelColor = lighting.GetColorAtPoint(ray.origin, pointOfContact, primitive.material, norm);
+                                myPixelColor = lighting.PointColor(ray.origin, pointOfContact, primitive.material, norm);
 
 
                                 if (!noLighting)
@@ -171,7 +171,7 @@ namespace RayTracerNew
                                                 && oldPointOfContactToLight > newPointOfContactToLight
                                                 && oldPointOfContactToLight > oldToNew)
                                                 {
-                                                    ColorRGB newColor = lighting.GetColorAtPoint(currentRay.origin, currentPoinOfContact, primReflect.material, currentNormal, true);
+                                                    ColorRGB newColor = lighting.PointColor(currentRay.origin, currentPoinOfContact, primReflect.material, currentNormal, true);
                                                     myPixelColor = (myPixelColor + (newColor * currentSpecular));
                                                     currentSpecular = primReflect.material.specular * currentSpecular;
                                                     intersectionFound = true;

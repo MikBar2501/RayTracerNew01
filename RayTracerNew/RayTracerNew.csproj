@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Light.cs" />
     <Compile Include="Lighting.cs" />
+    <Compile Include="Lights.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Matrix3x3.cs" />

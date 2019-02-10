@@ -60,13 +60,13 @@ namespace RayTracerNew
 
         void Push()
         {
-            DrawMatrix(transform.GetMatrix());
+            //DrawMatrix(transform.GetMatrix());
             transformStack.Add(new Transform(transform));
             transform = new Transform(transform);
             //transform.Set();
         }
 
-        public void DrawMatrix(Matrix matrix)
+       /* public void DrawMatrix(Matrix matrix)
         {
             for (int x = 0; x < matrix.rows; x++)
             {
@@ -77,7 +77,7 @@ namespace RayTracerNew
                 }
                 Debug.WriteLine(m);
             }
-        }
+        }*/
 
         bool Pop()
         {
@@ -89,7 +89,7 @@ namespace RayTracerNew
             transform = new Transform(transformStack[top]);
             transformStack.RemoveAt(top);
 
-            DrawMatrix(transform.GetMatrix());
+            //DrawMatrix(transform.GetMatrix());
 
             return true;
         }
@@ -115,9 +115,9 @@ namespace RayTracerNew
                     lineIterator++;
                 }
 
-                lineIterator++; //lineIterator jest po pierwszej spacji
+                lineIterator++; 
 
-                switch (command) //obsługa commendy
+                switch (command) 
                 {
                     case "maxverts":
                         curCommand = Command.maxverts;
@@ -219,8 +219,6 @@ namespace RayTracerNew
                             lineIterator++;
                         }
 
-                        //dodaj pelna sciezke???
-
                         Raytracer.savePath = pathArg;
                         continue;
 
@@ -228,7 +226,7 @@ namespace RayTracerNew
                         continue;
                 }
 
-                Debug.WriteLine("Command " + command.ToString());
+               // Debug.WriteLine("Command " + command.ToString());
 
                 List<float> args = new List<float>();
 
@@ -246,7 +244,7 @@ namespace RayTracerNew
 
                         //obsluz arg
                         float argF = ConvertToFloat(arg);
-                        Debug.WriteLine("Arg " + argF);
+                        //Debug.WriteLine("Arg " + argF);
                         args.Add(argF);
 
                         arg = "";
@@ -356,7 +354,7 @@ namespace RayTracerNew
                     sphere.reverseTransform = sphere.transform.Inverse();
                     sphere.material = new Material(material);
                     Debug.WriteLine("sphere");
-                    DrawMatrix(sphere.transform);
+                    //DrawMatrix(sphere.transform);
                     Raytracer.main.AddPrimitive(sphere);
                     break;
 
@@ -398,23 +396,18 @@ namespace RayTracerNew
                     if (args.Count < 3)
                         return false;
 
-                    //transform.translate = Matrix.GetTranslateMatrix(new Vector3(args[0], args[1], args[2])) * transform.translate;
-                    //transform.transform = Matrix.GetTranslateMatrix(new Vector3(args[0], args[1], args[2])) * transform.transform;
-
+  
                     transform.transList.Add(Matrix.GetTranslateMatrix(new Vector3(args[0], args[1], args[2])));
 
                     //DrawMatrix(transform);
 
-                    //translate += new Vector3(args[0], args[1], args[2]);
+
                     break;
 
                 case Command.scale:
                     if (args.Count < 3)
                         return false;
-
-                    //transform.scale = Matrix.GetScaleMatrix(new Vector3(args[0], args[1], args[2])) * transform.scale;
-                    //transform.transform = Matrix.GetScaleMatrix(new Vector3(args[0], args[1], args[2])) * transform.transform;
-
+                    
                     transform.transList.Add(Matrix.GetScaleMatrix(new Vector3(args[0], args[1], args[2])));
 
                     //DrawMatrix(transform);
@@ -426,23 +419,17 @@ namespace RayTracerNew
 
                     if (args[0] != 0.0f)
                     {
-                        //transform.rotation = Matrix.GetRotationXMatrix(args[0] * args[3]) * transform.rotation;
-                        //transform.transform = Matrix.GetRotationXMatrix(args[0] * args[3]) * transform.transform;
                         transform.transList.Add(Matrix.GetRotationXMatrix(args[0] * args[3]));
-
-                        //transform.translate = Matrix.GetTranslateMatrix(new Vector3(0, 0.6f, 0) * (args[3] > 0 ? 1 : -1)) * transform.translate;
                     }
                     if (args[1] != 0.0f)
                     {
-                        //transform.rotation = Matrix.GetRotationYMatrix(args[1] * args[3]) * transform.rotation;
-                        //transform.transform = Matrix.GetRotationYMatrix(args[1] * args[3]) * transform.transform;
+
                         transform.transList.Add(Matrix.GetRotationYMatrix(args[1] * args[3]));
                     }
 
                     if (args[2] != 0.0f)
                     {
-                        //transform.rotation = Matrix.GetRotationZMatrix(args[2] * args[3]) * transform.rotation;
-                        //transform.transform = Matrix.GetRotationZMatrix(args[2] * args[3]) * transform.transform;
+                       
                         transform.transList.Add(Matrix.GetRotationZMatrix(args[2] * args[3]));
                     }
                     //DrawMatrix(transform);
@@ -452,11 +439,17 @@ namespace RayTracerNew
                     if (args.Count < 6)
                         return false;
 
-                    //Debug.WriteLine("DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR");
+                    Debug.WriteLine("DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR");
 
-                    DirectionalLight light = new DirectionalLight();
-                    light.color = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
-                    light.direction = Vector3.Normalize(new Vector3(args[0], args[1], args[2]));
+                    //DirectionalLight light = new DirectionalLight();
+                    //light.color = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
+                    //light.direction = Vector3.Normalize(new Vector3(args[0], args[1], args[2]));
+
+                    ColorRGB lightColor = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
+                    Vector3 dirPose = Vector3.Normalize(new Vector3(args[0], args[1], args[2]));
+                    
+                    Lights light = new Lights(lightColor, dirPose, false);
+
                     Raytracer.main.lighting.lights.Add(light);
                     break;
 
@@ -464,23 +457,32 @@ namespace RayTracerNew
                     if (args.Count < 6)
                         return false;
 
-                    //Debug.WriteLine("POOOOOOOOOOOOOOOOOOOOINT");
+                    Debug.WriteLine("POOOOOOOOOOOOOOOOOOOOINT");
 
-                    PointLight lightP = new PointLight();
-                    lightP.color = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
-                    lightP.position = new Vector3(args[0], args[1], args[2]);
+                    //PointLight lightP = new PointLight();
+                    //lightP.color = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
+                    //lightP.position = new Vector3(args[0], args[1], args[2]);
+
+
+                    ColorRGB lightColorP = new ColorRGB((int)(args[3] * 255), (int)(args[4] * 255), (int)(args[5] * 255));
+                    Vector3 dirPoseP = new Vector3(args[0], args[1], args[2]);
+                    Lights lightP = new Lights(lightColorP,dirPoseP, true);
                     Raytracer.main.lighting.lights.Add(lightP);
 
-                    Debug.WriteLine(lightP.color.ToString());
+                    Debug.WriteLine(lightP.lightColor.ToString());
                     break;
 
                 case Command.attenuation:
                     if (args.Count < 3)
                         return false;
 
-                    PointLight.constant = args[0];
-                    PointLight.linear = args[1];
-                    PointLight.quadratic = args[2];
+                    //PointLight.constant = args[0];
+                    //PointLight.linear = args[1];
+                    //PointLight.quadratic = args[2];
+
+                    Lights.constant = args[0];
+                    Lights.linear = args[1];
+                    Lights.quadratic = args[2];
                     break;
 
                 case Command.diffuse:
