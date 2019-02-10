@@ -40,6 +40,18 @@ namespace RayTracerNew
             int r = Math.Min(255, this.r);
             int g = Math.Min(255, this.g);
             int b = Math.Min(255, this.b);
+            if(r < 0)
+            {
+                r = 0;
+            }
+            if (g < 0)
+            {
+                g = 0;
+            }
+            if (b < 0)
+            {
+                b = 0;
+            }
             return Color.FromArgb(r, g, b);
         }
 

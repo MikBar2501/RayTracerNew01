@@ -193,7 +193,7 @@ namespace RayTracerNew
                     bmp.SetPixel(x, camera.imageHeight - y - 1, pixelColor);
                 }
                 float perc = ((float)y / camera.imageHeight * 100);
-
+                Debug.WriteLine(perc);
                 
             }
 
